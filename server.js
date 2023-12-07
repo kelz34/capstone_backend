@@ -58,7 +58,34 @@ app.get("/elements/:id", async (req, res) => {
 
 // update an element 
 
+app.put("/elements/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { description } = req.body
+        const updateElements = await pool.query(
+            "UPDATE elements SET description = $1 WHERE elements_id = $2", [description, id]
+        );
+
+        res.json("Elements was updated!")
+    } catch (error) { 
+        console.error(err.message)
+    }
+})
+    
 // delete an element 
+
+app.delete("/elements/:id", async (req, res) => {
+    try {
+        // specific what we want to delete, don't have to add data
+        const { id } = req.params;
+        const deleteElements = await pool.query("DELETE FROM elements WHERE  elements_id = $1", [
+            id
+        ]);
+        res.json("Elements was deleted!")
+    } catch (err) {
+        console.log(err.message)
+    }
+})
 
 // listen to server
 app.listen(3000, () => {
