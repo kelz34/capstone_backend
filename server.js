@@ -29,7 +29,7 @@ app.post("/qanda", async (req, res) => {
     }
 })
 
-// get all elements
+// get all qanda
 
 app.get("/qanda", async (req, res) => {
     try {
@@ -40,13 +40,13 @@ app.get("/qanda", async (req, res) => {
     }
 })
 
-// get an element
+// get an qanda
 
 app.get("/qanda/:id", async (req, res) => {
     try {
         // destructure id 
         const { id } =  req.params;
-        // select all from elements where element id = 1 specific to the id
+        // select all from qanda where qanda id = 1 specific to the id
         const qanda = await pool.query("SELECT * FROM qanda WHERE qanda_id = $1", [id])
 
         res.json(qanda.rows[0])
@@ -55,7 +55,7 @@ app.get("/qanda/:id", async (req, res) => {
     }
 })
 
-// update an element 
+// update an qanda
 
 app.put("/qanda/:id", async (req, res) => {
     try {
@@ -71,7 +71,7 @@ app.put("/qanda/:id", async (req, res) => {
     }
 })
     
-// delete an element 
+// delete an qanda 
 
 app.delete("/qanda/:id", async (req, res) => {
     try {
