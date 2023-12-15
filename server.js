@@ -8,22 +8,22 @@ app.use(cors())
 // this allows us to get request from request.body then we can get json data
 app.use(express.json())
 
+// seed data
+
 // ROUTES //
 
-// a create an element 
-// 
-app.post("/elements", async (req, res) => {
-    // anytime you try to get data or create data it will take time, async uses await, which waits for the function before it continues 
-    // makes error handling so much easier
-    // try catch - catches error and those it out
+// a create an qanda 
+
+app.post("/qanda", async (req, res) => {
+    // try catch - catches error and throws it out
     try {
-        const { description } = req.body;
-        const newElements = await pool.query(
-            "INSERT INTO elements (description) VALUES($1) RETURNING *",
-            [description]
+        const { term, definition } = req.body;
+        const newQanda = await pool.query(
+            "INSERT INTO qanda (term, definition) VALUES($1, $2) RETURNING *",
+            [term, definition]
         );
 
-        res.json(newElements.rows[0])
+        res.json(newQanda.rows[0])
     } catch (err) {
         console.error(err.message)
     }
@@ -31,10 +31,10 @@ app.post("/elements", async (req, res) => {
 
 // get all elements
 
-app.get("/elements", async (req, res) => {
+app.get("/qanda", async (req, res) => {
     try {
-        const allElements = await pool.query("SELECT * FROM elements");
-        res.json(allElements.rows);
+        const allQanda = await pool.query("SELECT * FROM qanda");
+        res.json(allQanda.rows);
     } catch (err) {
         console.error(err.message);
     }
@@ -42,15 +42,14 @@ app.get("/elements", async (req, res) => {
 
 // get an element
 
-app.get("/elements/:id", async (req, res) => {
+app.get("/qanda/:id", async (req, res) => {
     try {
         // destructure id 
         const { id } =  req.params;
-        // await because it will take time
         // select all from elements where element id = 1 specific to the id
-        const elements = await pool.query("SELECT * FROM elements WHERE elements_id = $1", [id])
+        const qanda = await pool.query("SELECT * FROM qanda WHERE qanda_id = $1", [id])
 
-        res.json(elements.rows[0])
+        res.json(qanda.rows[0])
     } catch (err) {
         console.error(err.message)
     }
@@ -58,15 +57,15 @@ app.get("/elements/:id", async (req, res) => {
 
 // update an element 
 
-app.put("/elements/:id", async (req, res) => {
+app.put("/qanda/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { description } = req.body
-        const updateElements = await pool.query(
-            "UPDATE elements SET description = $1 WHERE elements_id = $2", [description, id]
+        const { term, definition } = req.body
+        const updateQanda = await pool.query(
+            "UPDATE qanda SET term = $1, definition = $2 WHERE qanda_id = $3", [term, definition, id]
         );
 
-        res.json("Elements was updated!")
+        res.json("Qanda was updated!")
     } catch (error) { 
         console.error(err.message)
     }
@@ -74,14 +73,14 @@ app.put("/elements/:id", async (req, res) => {
     
 // delete an element 
 
-app.delete("/elements/:id", async (req, res) => {
+app.delete("/qanda/:id", async (req, res) => {
     try {
         // specific what we want to delete, don't have to add data
         const { id } = req.params;
-        const deleteElements = await pool.query("DELETE FROM elements WHERE  elements_id = $1", [
+        const deleteQanda = await pool.query("DELETE FROM qanda WHERE qanda_id = $1", [
             id
         ]);
-        res.json("Elements was deleted!")
+        res.json("Qanda was deleted!")
     } catch (err) {
         console.log(err.message)
     }

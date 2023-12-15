@@ -8,7 +8,7 @@ const pool = new Pool({
     password: "Proton34!",
     host: "localhost",
     port: 5432,
-    database: "periodic_table"
+    database: "chemcards"
 });
 
 module.exports = pool;
