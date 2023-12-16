@@ -9,6 +9,5 @@ CREATE DATABASE chemcards;
 
 CREATE TABLE qanda( 
     qanda_id SERIAL PRIMARY KEY, 
-    term VARCHAR(255), 
-    definition VARCHAR(355)
+    term VARCHAR(255)
 );
